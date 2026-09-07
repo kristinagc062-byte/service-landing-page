@@ -33,6 +33,7 @@ export function CTAForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function validate(currentValues: FormValues) {
     const nextErrors: FormErrors = {};
@@ -61,14 +62,16 @@ export function CTAForm() {
     value: FormValues[keyof FormValues],
   ) {
     setValues((current) => ({ ...current, [field]: value }));
+    setSubmitError("");
     if (submitted) {
       setErrors(validate({ ...values, [field]: value }));
     }
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitted(true);
+    setSubmitError("");
 
     const formData = new FormData(event.currentTarget);
     const submittedValues: FormValues = {
@@ -95,18 +98,49 @@ export function CTAForm() {
       whatsapp: `+977${submittedValues.whatsapp}`,
     };
     setValues(submittedValues);
-    window.sessionStorage.setItem(
-      "marketing-guide-lead",
-      JSON.stringify(savedValues),
-    );
 
-    router.push("/thank-you");
+    try {
+      const response = await fetch("/api/leads", {
+        body: JSON.stringify(savedValues),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
 
-    window.setTimeout(() => {
-      if (window.location.pathname !== "/thank-you") {
-        window.location.assign("/thank-you");
+      if (!response.ok) {
+        const result = (await response.json().catch(() => null)) as {
+          error?: string;
+          errors?: FormErrors;
+        } | null;
+
+        if (result?.errors) {
+          setErrors(result.errors);
+        }
+
+        setSubmitError(
+          result?.error ?? "Lead submission failed. Please try again.",
+        );
+        setIsSubmitting(false);
+        return;
       }
-    }, 350);
+
+      window.sessionStorage.setItem(
+        "marketing-guide-lead",
+        JSON.stringify(savedValues),
+      );
+
+      router.push("/thank-you");
+
+      window.setTimeout(() => {
+        if (window.location.pathname !== "/thank-you") {
+          window.location.assign("/thank-you");
+        }
+      }, 350);
+    } catch {
+      setSubmitError("Lead submission failed. Please try again.");
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -124,6 +158,19 @@ export function CTAForm() {
             customers, improve your online presence, and create a more
             consistent customer acquisition process.
           </p>
+          <div className="mt-7 rounded-[1.5rem] border border-brand-primary/15 bg-brand-soft/70 p-6 text-left shadow-soft">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-primary">
+              One-to-One Consultation
+            </p>
+            <h3 className="mt-3 text-2xl font-black text-brand-ink">
+              Get a One-to-One Marketing Consultation
+            </h3>
+            <p className="mt-3 leading-7 text-brand-muted">
+              Get personalized guidance for your business and discover how
+              AI-powered marketing can help you attract more customers and grow
+              online.
+            </p>
+          </div>
           <div className="mt-7 rounded-[1.5rem] border border-brand-primary/15 bg-white p-6 text-left shadow-soft">
             <h3 className="text-xl font-black text-brand-ink">
               Simple Guidance for Growing Businesses
@@ -247,7 +294,12 @@ export function CTAForm() {
           </button>
           {isSubmitting ? (
             <p className="mt-4 rounded-2xl bg-brand-soft px-4 py-3 text-center text-sm font-bold text-brand-primary">
-              Success. Redirecting you to the next step...
+              Submitting your consultation request...
+            </p>
+          ) : null}
+          {submitError ? (
+            <p className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-center text-sm font-bold text-red-700">
+              {submitError}
             </p>
           ) : null}
           <p className="mt-4 flex items-center justify-center gap-2 text-center text-sm font-semibold text-brand-muted">
