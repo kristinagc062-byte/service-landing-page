@@ -45,7 +45,7 @@ export default function ThankYouPage() {
           </p>
 
           <section className="mt-10 rounded-[2rem] border border-brand-primary/15 bg-white p-6 text-left shadow-soft sm:p-8">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
               <div className="flex items-start gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-secondary">
                   <MessageCircle aria-hidden="true" className="h-5 w-5" />
@@ -64,16 +64,6 @@ export default function ThankYouPage() {
                   </p>
                 </div>
               </div>
-              <a
-                className="inline-flex min-h-14 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-brand-primary px-6 py-4 text-base font-black text-white shadow-glow transition duration-200 hover:-translate-y-0.5 hover:bg-[#471541] focus:outline-none focus:ring-4 focus:ring-brand-primary/20 sm:w-auto"
-                href={whatsappUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <MessageCircle aria-hidden="true" className="h-5 w-5" />
-                Chat with me on WhatsApp
-                <ArrowRight aria-hidden="true" className="h-5 w-5" />
-              </a>
             </div>
           </section>
 
