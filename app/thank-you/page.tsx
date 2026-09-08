@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import {
-  ArrowRight,
-  CheckCircle2,
-  MessageCircle,
-  PlayCircle,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { BrandLine } from "@/components/BrandLine";
 import { Header } from "@/components/Header";
 import { siteConfig } from "@/lib/siteConfig";
@@ -21,8 +16,10 @@ export const metadata: Metadata = {
   },
 };
 
+const youtubeVideoUrl = "https://www.youtube.com/embed/dF83wlXkqZs";
+
 export default function ThankYouPage() {
-  const videoUrl = siteConfig.consultationVideoUrl;
+  const videoUrl = youtubeVideoUrl;
   const whatsappUrl = siteConfig.whatsappUrl;
 
   return (
@@ -74,7 +71,7 @@ export default function ThankYouPage() {
                 target="_blank"
               >
                 <MessageCircle aria-hidden="true" className="h-5 w-5" />
-                Chat on WhatsApp
+                Chat with me on WhatsApp
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
               </a>
             </div>
@@ -86,39 +83,24 @@ export default function ThankYouPage() {
                 Watch This Before You Continue
               </p>
               <h2 className="mt-3 text-2xl font-black text-brand-ink sm:text-3xl">
-                Video Coming Soon
+                Watch This Before Your Consultation
               </h2>
               <p className="mt-3 text-base leading-7 text-brand-muted">
-                A short video will be added here later so you can see exactly
-                what happens next. For now, this space is ready for your real
-                consultation video.
+                Watch this short video before you continue so you know what to
+                expect and how to get the most value from your consultation.
               </p>
             </div>
 
             <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-brand-primary/15 bg-gradient-to-br from-brand-soft via-white to-[#fbf4f9]">
               <div className="aspect-video w-full">
-                {videoUrl ? (
-                  <iframe
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="h-full w-full"
-                    loading="lazy"
-                    src={videoUrl}
-                    title="Watch this before your consultation"
-                  />
-                ) : (
-                  <div className="flex h-full min-h-48 items-center justify-center px-5 text-center text-brand-primary">
-                    <div>
-                      <PlayCircle
-                        aria-hidden="true"
-                        className="mx-auto h-14 w-14"
-                      />
-                      <p className="mt-4 text-lg font-black text-brand-ink">
-                        Video Coming Soon
-                      </p>
-                    </div>
-                  </div>
-                )}
+                <iframe
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="h-full w-full"
+                  loading="lazy"
+                  src={videoUrl}
+                  title="Watch this before your consultation"
+                />
               </div>
             </div>
           </section>
@@ -148,7 +130,7 @@ export default function ThankYouPage() {
                     target="_blank"
                   >
                     <MessageCircle aria-hidden="true" className="h-5 w-5" />
-                    Chat on WhatsApp
+                    Chat with me on WhatsApp
                     <ArrowRight aria-hidden="true" className="h-5 w-5" />
                   </a>
                 ) : (
@@ -157,7 +139,7 @@ export default function ThankYouPage() {
                     className="inline-flex min-h-14 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full bg-slate-200 px-6 py-4 text-base font-black text-slate-600 sm:w-auto"
                   >
                     <MessageCircle aria-hidden="true" className="h-5 w-5" />
-                    Chat on WhatsApp
+                    Chat with me on WhatsApp
                   </div>
                 )}
               </div>
